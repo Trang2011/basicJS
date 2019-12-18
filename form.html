@@ -20,7 +20,7 @@
 
   .form-group {
     border: 1px solid #00000026;
-    width: 92%;
+    width: 97%;
     padding: 5px;
     font-size: 20px;
     border-radius: 5px;
@@ -31,7 +31,7 @@
   }
 
   .form-input {
-    margin: 15px;
+    margin: 15px 0px;
   }
 
   .error {
@@ -56,6 +56,9 @@
     background-color: #335fc19e;
     font-size: 17px;
   }
+  .btn-add a:hover {
+    background-color: #335fc173;
+  }
 
   textarea {
     margin: 20px 0;
@@ -71,6 +74,10 @@
     border-radius: 5px;
     outline: none;
   }
+  select:hover{
+    cursor: pointer;
+    color : #0000009c;
+  }
   input{
     height: 30px;
     border: 0.5px solid #00000026;
@@ -84,7 +91,7 @@
     float : left;
   }
   input{
-    width: 65%;
+    width: 67%;
   }
   button:hover{
     cursor: pointer;
@@ -92,6 +99,13 @@
   .btn-delete{
     float: right;
     right: 0;
+  }
+  .btn-submit{
+    margin: 20px 0; 
+    text-align: center;
+  }
+  .btn-submit a:hover{
+    background-color: #49c133a8;
   }
 </style>
 
@@ -139,7 +153,7 @@
   <div class="btn-add" style="margin: 20px 0; text-align: left;">
     <a href="javascript:void(0)" onclick="addMore()">Add</a>
   </div>
-    <div style="margin: 20px 0; text-align: center;">
+    <div class ="btn-submit">
       <a href="javascript:void(0)" onclick="validate()">Submit</a>
     </div>
   </div>
