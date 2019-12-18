@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SlideShow</title>
+  </head>
+  <style>
+    .slide-show {
+      margin: 20px auto;
+      width: 900px;
+      height: 430px;
+      overflow: hidden;
+      position: relative;
+    }
+    .container {
+      width: 100%;
+      height: 100%;
+      transition: transform 350ms ease-in;
+    }
+
+    .slide-element {
+      position: absolute;
+      width: 100%;
+      /* display: none; */
+    }
+    .slide-element img {
+      width: 100%;
+      height: 400px;
+    }
+    .hidden {
+      display: none;
+    }
+    .next,
+    .prev {
+      position: absolute;
+      top: 50%;
+      color: white;
+      background: none;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      transform: translateY(-20px);
+      cursor: pointer;
+    }
+    .next {
+      right: 0;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .prev {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    .dot {
+      cursor: pointer;
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 1px solid black;
+    }
+    .current-dot {
+      background-color: black;
+    }
+    .current-slide{
+      /* display: inline; */
+    }
+    .caption {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      transform: translateY(-100%);
+      margin: 0;
+      margin-top: -4px;
+      padding: 15px;
+      text-align: center;
+    }
+    .dots {
+      display: flex;
+      justify-content: center;
+      position: fixed;
+    }
+    .fade {
+      -webkit-animation-name: fade;
+      -webkit-animation-duration: 2s;
+      animation-name: fade;
+      animation-duration: 2s;
+    }
+
+    @-webkit-keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0.4;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+  <body>
+    <div class="slide-show">
+      <div class="container">
+          <div class="slide-element fade current-slide">
+              <img
+                src="https://www.canva.com/learn/wp-content/uploads/2018/12/00-winterlandscapes_featimage.jpg"
+              />
+              <p class="caption fade">Caption 0</p>
+            </div>
+        <div class="slide-element fade">
+          <img
+            src="https://wallpaperplay.com/walls/full/f/f/1/122862.jpg"
+          />
+          <p class="caption fade">Caption 1</p>
+        </div>
+        <div class="slide-element fade">
+          <img
+            src="https://www.socwall.com/images/wallpapers/68128-1366x768.jpg"
+          />
+          <p class="caption fade">Caption 2</p>
+        </div>
+        <div class="slide-element fade">
+          <img
+            src="https://3.bp.blogspot.com/-Ulpbl3Dp0fg/W-JCgnnQ0OI/AAAAAAAAACY/Rco_WLR2WwED22co0hZIdBW1087L6wTzACHMYCw/s1600/the-50-most-beautiful-landscapes-in-the-world-travel-us-news.jpg"
+          />
+          <p class="caption fade">Caption 3</p>
+        </div>
+      </div>
+      <div>
+        <a class="next">next</a>
+        <a class="prev">prev</a>
+      </div>
+      <div class="dots"></div>
+    </div>
+    <script>
+      const listSlide = document.querySelector(".container");
+      const slideItem = Array.from(listSlide.children);
+      const nextButton = document.querySelector(".next");
+      const prevButton = document.querySelector(".prev");
+      let dots = document.querySelector(".dots");
+      const slideWidth = slideItem[0].getBoundingClientRect().width;
+      dots.style.width = slideWidth + "px";
+      slideItem.forEach((slide, index) => {
+        slide.style.left = slideWidth * index + "px";
+        dots.insertAdjacentHTML("beforeend", '<a class="dot" ></a>');
+      });
+      dots = document.querySelector(".dots");
+      const dot = Array.from(dots.children);
+      dot[0].classList.add("current-dot");
+      const updateDots = (currentDot, targetDot) => {
+        currentDot.classList.remove("current-dot");
+        targetDot.classList.add("current-dot");
+      };
+      const moveToSlide = (listSlide, currentSlide, targetSlide) => {
+        // console.log(listSlide )
+        listSlide.style.transform =
+          "translateX(-" + targetSlide.style.left + ")";
+        currentSlide.classList.remove("current-slide");
+        targetSlide.classList.add("current-slide");
+      };
+
+      prevButton.addEventListener("click", e => {
+        const currentSlide = listSlide.querySelector(".current-slide");
+        let prevSlide = currentSlide.previousElementSibling;
+        if (prevSlide === null) prevSlide = slideItem[slideItem.length - 1];
+        moveToSlide(listSlide, currentSlide, prevSlide);
+
+        const currentDot = dots.querySelector(".current-dot");
+        let prevDot = currentDot.previousElementSibling;
+        if (prevDot === null) prevDot = dot[dot.length - 1];
+        updateDots(currentDot, prevDot);
+      });
+      nextButton.addEventListener("click", e => {
+        const currentSlide = listSlide.querySelector(".current-slide");
+        let nextSlide = currentSlide.nextElementSibling;
+        if (nextSlide === null) nextSlide = slideItem[0];
+        moveToSlide(listSlide, currentSlide, nextSlide);
+
+        const currentDot = dots.querySelector(".current-dot");
+        let nextDot = currentDot.nextElementSibling;
+        if (nextDot === null) nextDot = dot[0];
+        updateDots(currentDot, nextDot);
+      });
+      dots.addEventListener("click", e => {
+        // console.log(e.target.closest('a'))
+        const targetDot = e.target.closest("a");
+        const currentSlide = listSlide.querySelector(".current-slide");
+        const currentDot = dots.querySelector(".current-dot");
+        const targetDotIndex = dot.findIndex(dot => dot === targetDot);
+        moveToSlide(listSlide, currentSlide, slideItem[targetDotIndex]);
+        updateDots(currentDot, targetDot);
+      });
+    </script>
+  </body>
+</html>

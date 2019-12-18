@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+</head>
+<style>
+  .form-register {
+    margin: 50px auto;
+    border: 1px solid #00000026;
+    width: fit-content;
+    padding: 20px;
+    font-size: 20px;
+    border-radius: 7px;
+    box-shadow: 2px 2px 15px #888888;
+  }
+
+  .form-group {
+    border: 1px solid #00000026;
+    width: 100%;
+    padding: 5px;
+    font-size: 20px;
+    border-radius: 5px;
+  }
+  h1 {
+    text-align: center;
+  }
+
+  .form-input {
+    margin: 15px;
+  }
+
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+
+  p {
+    margin: 5px 0;
+    display: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+    background-color: #49c133d9;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .btn-add a {
+    background-color: #335fc19e;
+    font-size: 17px;
+  }
+
+  textarea {
+    margin: 20px 0;
+    outline: none;
+  }
+
+  select {
+    width: 180px;
+    height: 30px;
+    background: white;
+    border-radius: 5px;
+  }
+  input{
+    height: 30px;
+    border: 1px solid #00000026;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+  }
+  label{
+    width: 30%;
+    float : left;
+  }
+  input{
+    width: 65%;
+  }
+  button:hover{
+    cursor: pointer;
+  }
+  .btn-delete{
+    float: right;
+    right: 0;
+  }
+</style>
+
+<body>
+  <div class="form-register">
+    <h1 style="color : #49c133d9">Register</h1>
+    <div class="form-input">
+      <label>username (*)</label>
+      <input type="text" name="username" id="username" placeholder="username" onkeyup="validate()" />
+      <p class="error" id="error1"></p>
+    </div>
+    <div class="form-input">
+      <label>password (*)</label>
+      <input type="password" name="password" id="password" placeholder="password" onkeyup="validate()" />
+      <p class="error" id="error2"></p>
+    </div>
+    <div class="form-input">
+      <label>confirm (*) </label>
+      <input type="password" name="repassword" id="repassword" placeholder="repassword" onkeyup="validate()" />
+      <p class="error" id="error3"></p>
+    </div>
+    <div id="form-group">
+      <div class="form-group" >
+        <div>
+          <select class="subject">
+            <option value="0">Subject</option>
+            <option value="PHP">PHP</option>
+            <option value="JAVA">JAVA</option>
+            <option value="JS">JS</option>
+          </select>
+          <select class = "teacher">
+            <option value="0">Teacher</option>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+          </select>
+          <button class= "btn-delete" onclick="removeForm(this)" style="color:#80808091;background-color: white; border: none;display: none;" >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <textarea class="text" rows="20" cols="50%"></textarea>
+        <p class="error_form error" id="error4"></p>
+      </div>
+  </div>
+  <div class="btn-add" style="margin: 20px 0; text-align: left;">
+    <a href="javascript:void(0)" onclick="addMore()">Add</a>
+  </div>
+    <div style="margin: 20px 0; text-align: center;">
+      <a href="javascript:void(0)" onclick="validate()">Submit</a>
+    </div>
+  </div>
+
+  <script>
+    function checkFormGroupNumber(){
+      var count = document.getElementsByClassName('form-group').length;
+      if(count <=1){
+        
+        document.getElementsByClassName('btn-delete')[0].style.display = 'none';
+      }
+      else{
+        for(var i = 0 ; i < document.getElementsByClassName('btn-delete').length ; i++)
+        document.getElementsByClassName('btn-delete')[i].style.display = 'block';
+      }
+    }
+    function validate() {
+      var valid = true;
+      var object = [];
+
+      var username = document.getElementById("username").value;
+      var password = document.getElementById("password").value;
+      var repassword = document.getElementById("repassword").value;
+      var error = [];
+      for (
+        var i = 0;
+        i < document.getElementsByClassName("form-input").length;
+        i++
+      ) {
+        error[i] = document.getElementById("error" + (i + 1));
+      }
+      if (username == "") {
+        error[0].style.display = "block";
+        error[0].innerHTML = "username is required!";
+        valid = false;
+      } else error[0].style.display = "none";
+      if (password == "") {
+        error[1].style.display = "block";
+        error[1].innerHTML = "password is required!";
+        valid = false;
+      } else error[1].style.display = "none";
+      if (repassword == "") {
+        error[2].style.display = "block";
+        error[2].innerHTML = "please confirm your password!";
+        valid = false;
+      } else if (
+        password != "" &&
+        repassword != "" &&
+        password != repassword
+      ) {
+        error[2].style.display = "block";
+        error[2].innerHTML = "password do not match!";
+        valid = false;
+      } else error[2].style.display = "none";
+      var formGroup = document.getElementsByClassName("form-group");
+      for(var i = 0 ; i < formGroup.length; i++){
+          var subject = formGroup[i].getElementsByClassName("subject")[0].value;
+          var teacher = formGroup[i].getElementsByClassName("teacher")[0].value;
+          var text = formGroup[i].getElementsByClassName("text")[0].value;
+          var form_error = formGroup[i].getElementsByClassName('error_form')[0];
+          if(subject == "0" || teacher == "0" || text == "" ){
+          form_error.style.display = 'block';
+          form_error.innerHTML = "this form is required!";
+          valid = false;
+          }
+          else{
+             form_error.style.display = "none";
+             object.push({'subject' :subject , 'teacher' : teacher, 'text' : text})
+             console.log(object)
+          }
+      }
+      if(valid){
+        var infor = {
+          'username' : username,
+          'password' : password,
+          'subject' : object
+        }
+        console.log(infor)
+      }
+    }
+    function addMore(){     
+      var formGroup = document.getElementById("form-group");
+      var child = formGroup.children;
+      // console.log(child[0].innerHTML)
+      // formGroup.appendChild(child[0])
+      // console.log(formGroup)
+     formGroup.insertAdjacentHTML("beforeend",' <div class="form-group" >' +child[0].innerHTML + '</div>')
+      checkFormGroupNumber();
+    }
+    function removeForm(element){
+      var formGroup = document.getElementById("form-group");
+      var a = element.parentNode.parentNode;
+      a.parentNode.removeChild(a)
+      checkFormGroupNumber();
+    }
+  </script>
+</body>
+
+</html>
